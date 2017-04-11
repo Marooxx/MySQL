@@ -89,11 +89,11 @@ SELECT prenom FROM employes ORDER BY prenom LIMIT 0,3;-- "0" est le début du ta
 -- Affichage des employés avec un salaire annuel
 SELECT prenom,salaire*12 FROM employes;
 SELECT prenom,salaire*12 AS 'Salaire annuel' FROM employes;-- AS = Alias qui permetd de donner un nom à notre table quis'écri AS ''
----------------------------------------------------------------------------
+---------------------SUM (la somme)------------------------------
 -- SUM() (somme)
 -- Affichage de la "masse salariale" sur le 12 mois
 SELECT SUM(salaire*12) AS 'masse salariale' FROM employes;
-----------------------------------------------------------------------------
+-----------------CALCULER UNE MOYENNE---------------------------------------
 -- AVG() permet de calculer une moyenne
 -- Affichage du salaire moyen
 SELECT ROUND(AVG(salaire),2) AS 'Salaire moyen' FROM employes;-- ROUND()permet d'arrondir un nombre,une somme et ',x' permet de définir à combien de chiffre après la virgule.
@@ -155,5 +155,37 @@ DELETE FROM employes WHERE id_employes ='350';-- suppression de l'employé ayant
 DELETE FROM employes WHERE service ='informatique'  AND NOT id_employes= '701';
 -- ou 
 DELETE FROM employes WHERE service ='informatique' AND id_employes !='701';
+
+------------------ TP------------------------------
+-- 1 Afficher la profession de l'employé 547
+SELECT service  FROM employes WHERE id_employes='547';-- commercial
+-- 2 Afficher la date d'embauche d'Amandine
+SELECT date_embauche FROM employes WHERE prenom='Amandine'; -- 2010-01-23
+-- 3 Afficher le nom de famille de Guillaume--
+SELECT nom FROM employes WHERE prenom = 'Guillaume';-- Miller
+-- 4 Afficher le nombre d'employés ayant un n° Id employes commençant par le chiffre 5
+SELECT*FROM employes WHERE id_employes LIKE '5%';-- 3 
+-- 5 Afficher le nombre de commerciaux
+SELECT*FROM employes WHERE service ='commercial';-- 6
+-- 6 Afficher le salaire moyen des informaticiens(+arrondi)
+SELECT ROUND(AVG(salaire)) AS 'Salaire moyen informaticien'FROM employes WHERE service = 'informatique';-- 1983 €
+-- 7 Afficher les 5 premiers employes apres avoir classe leurs noms de famille par ordre alphabétique
+SELECT nom,prenom FROM employes ORDER BY nom LIMIT 0,5;-- BLANCHET/CHEVEL/COLLIER/COTTET/DESPREZ
+-- 8 Afficher le coût des commerciaux sur une année
+SELECT SUM(salaire*12) FROM employes WHERE service='commercial';-- 184 200 €
+-- 9 Afficher le salaire moyen par service ( salaire + salaire moyen)
+SELECT AVG(salaire) FROM employes GROUP BY service;
+-- 10 Afficher le nombre de recrutemement sur l'année 2010 (+ alias)
+-- 11 Afficher le salaire moyen appliqué lors des recrutements sur la période de 2005 à 2007
+-- 12 Afficher le nombre de service différent
+-- 13. Afficher tous les employes (sauf ceux du service production et secrétariat)
+-- 14. Afficher conjoitement le nombre d'homme et de femme dans l'entreprise
+-- 15. Afficher les commerciaux ayant été recruté avant 2005 de sexe masculin et gagnant un salaire supérieur à 2500€
+-- 16. Qui a été embauché en dernier? 
+-- 17. Afficher les informations sur l'employé du service commercial gagnant le salaire le plus élevé
+-- 18. Afficher le prénom de l'informaticien gagnant le meilleur salaire
+-- 19. Afficher le prenom de l'informaticien ayant été recruté en premiers
+-- 20. Augmenter chaque employé de 100€
+-- 21. Supprimer les employés du service commercial   
 
 
