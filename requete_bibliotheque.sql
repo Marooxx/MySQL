@@ -35,4 +35,7 @@ SELECT prenom FROM abonne WHERE id_abonne IN(SELECT id_abonne FROM emprunt WHERE
 -----------------------                                             --------------------------
 -- Nous aimerions connaître le titre de(s) livre(s) que Chloé a emprunté à la bibliothèque
 SELECT titre FROM livre WHERE id_livre IN (SELECT id_livre FROM emprunt WHERE id_abonne IN (SELECT id_abonne FROM abonne WHERE prenom ='Chloe'));
+-- ET aussi nous aimerions connaître les titres de livre que Chloé n'a pas emprunté
+-- Nous aimerions connaître le titre de(s) livre(s) que Chloé a emprunté à la bibliothèque
+SELECT titre FROM livre WHERE id_livre NOT IN (SELECT id_livre FROM emprunt WHERE id_abonne IN (SELECT id_abonne FROM abonne WHERE prenom ='Chloe'));
                                         
