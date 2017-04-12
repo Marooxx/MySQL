@@ -32,3 +32,7 @@ SELECT prenom FROM abonne WHERE id_abonne IN(SELECT id_abonne FROM emprunt WHERE
 -- la liste des emprunts ( qui a emprunté quoi?) se trouve dans la table emprunt
 -- Nous ne pouvons pas relier la table abonné directement avec la table livre( car ces deux tables ne possèdent pas de champs commun)
 -- Nous pouvons relier la table livre avec la table emprunt. Nous pouvons aussi relier la table abonne avec la table emprunt
+-----------------------                                             --------------------------
+-- Nous aimerions connaître le titre de(s) livre(s) que Chloé a emprunté à la bibliothèque
+SELECT titre FROM livre WHERE id_livre IN (SELECT id_livre FROM emprunt WHERE id_abonne IN (SELECT id_abonne FROM abonne WHERE prenom ='Chloe'));
+                                        
