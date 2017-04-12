@@ -5,8 +5,8 @@ DROP nom_de_la_base;-- supprimer une base de données
 DROP table nom_de_la_base_donnée;-- supprime une table
 TRUNCATE nom_de_la_base;-- permet de vider la table
 
----------------------------------------------------------
-REQUETE DE SELECTION
+----------REQUETE DE SELECTION----------------------------------
+
 
 -- AFFICHAGE COMPLET
 SELECT id_employes,prenom,nom,sexe,service,date_embauche,salaire
@@ -159,33 +159,89 @@ DELETE FROM employes WHERE service ='informatique' AND id_employes !='701';
 ------------------ TP------------------------------
 -- 1 Afficher la profession de l'employé 547
 SELECT service  FROM employes WHERE id_employes='547';-- commercial
+
 -- 2 Afficher la date d'embauche d'Amandine
 SELECT date_embauche FROM employes WHERE prenom='Amandine'; -- 2010-01-23
+
 -- 3 Afficher le nom de famille de Guillaume--
 SELECT nom FROM employes WHERE prenom = 'Guillaume';-- Miller
+
 -- 4 Afficher le nombre d'employés ayant un n° Id employes commençant par le chiffre 5
 SELECT*FROM employes WHERE id_employes LIKE '5%';-- 3 
+SELECT COUNT AS 'Nombre de commerciaux' FROM employes WHERE id_employes LIKE '5%';-- correction
+
 -- 5 Afficher le nombre de commerciaux
 SELECT*FROM employes WHERE service ='commercial';-- 6
+SELECT COUNT AS'Nombre de commerciaux' FROM employes WHERE service='commercial';-- correction
+
 -- 6 Afficher le salaire moyen des informaticiens(+arrondi)
 SELECT ROUND(AVG(salaire)) AS 'Salaire moyen informaticien'FROM employes WHERE service = 'informatique';-- 1983 €
+
 -- 7 Afficher les 5 premiers employes apres avoir classe leurs noms de famille par ordre alphabétique
 SELECT nom,prenom FROM employes ORDER BY nom LIMIT 0,5;-- BLANCHET/CHEVEL/COLLIER/COTTET/DESPREZ
+
 -- 8 Afficher le coût des commerciaux sur une année
 SELECT SUM(salaire*12) FROM employes WHERE service='commercial';-- 184 200 €
+
 -- 9 Afficher le salaire moyen par service ( salaire + salaire moyen)
 SELECT AVG(salaire) FROM employes GROUP BY service;
+SELECT service, AVG(salaire) AS 'salaire moyen par service'FROM employes GROUP BY service;-- correction
+
 -- 10 Afficher le nombre de recrutemement sur l'année 2010 (+ alias)
+
+SELECT COUNT(*) AS'Nombre de recrutement' FROM employes GROUP BY date_embauche = '2010';-- 20
+SELECT COUNT(date_embauche) AS 'recrutement année 2010' FROM employes WHERE date_embauche BETWEEN '2010-01-01' AND '2010-12-31';
+SELECT COUNT(date_embauche) AS 'recrutement année 2010' FROM employes WHERE date_embauche LIKE'2010%';
+
 -- 11 Afficher le salaire moyen appliqué lors des recrutements sur la période de 2005 à 2007
+SELECT AVG(salaire) FROM employes WHERE date_embauche BETWEEN '2005-01-01' AND '2007-01-01';3033,3333
+SELECT ROUND (AVG(salaire))AS'salaire moyen' FROM employes WHERE date_embauche BETWEEN '2005-01-01' AND '2007-01-01';3033,3333-- correction
+
 -- 12 Afficher le nombre de service différent
+SELECT COUNT(DISTINCT service) FROM employes;-- 9
+
 -- 13. Afficher tous les employes (sauf ceux du service production et secrétariat)
+SELECT*FROM employes WHERE service NOT IN('production','secretariat');
+SELECT prenom,nom,service FROM employes WHERE service NOT IN('production','secretariat');-- correction
+
+
 -- 14. Afficher conjoitement le nombre d'homme et de femme dans l'entreprise
+SELECT sexe FROM employes WHERE sexe;
+SELECT sexe, COUNT(*) FROM employes GROUP BY sexe;-- correction
+
 -- 15. Afficher les commerciaux ayant été recruté avant 2005 de sexe masculin et gagnant un salaire supérieur à 2500€
+SELECT prenom,nom,service FROM employes WHERE sexe ='m' AND salaire>2500 AND date_embauche<'2005-01-01' AND service='commercial';-- THOMAS MILLER
+SELECT prenom,nom,service FROM employes WHERE date_embauche<'2005-01-01' AND salaire>2500 AND sexe='m' AND service='commercial';-- correction
+
 -- 16. Qui a été embauché en dernier? 
+SELECT * FROM employes WHERE date_embauche ORDER BY date_embauche;
+SELECT prenom,nom FROM employes WHERE date_embauche=(SELECT MAX(date_embauche) FROM employes);-- correction
+SELECT prenom,nom FROM employes ORDER BY date_embauche DESC LIMIT 0,1;-- correction
+
 -- 17. Afficher les informations sur l'employé du service commercial gagnant le salaire le plus élevé
--- 18. Afficher le prénom de l'informaticien gagnant le meilleur salaire
--- 19. Afficher le prenom de l'informaticien ayant été recruté en premiers
+SELECT prenom,nom,date_embauche,salaire FROM employes WHERE service = 'commercial' AND SELECT MAX (salaire >5000);
+SELECT prenom,nom,date_embauche,salaire FROM employes WHERE service ='commercial' AND salaire =(SELECT MAX(salaire) FROM employes WHERE service='commercial');-- correction
+
+ -- 18. Afficher le prénom de l informaticien gagnant le meilleur salaire
+SELECT prenom,salaire FROM employes WHERE service='informatique' AND salaire =(SELECT MAX(salaire) FROM employes WHERE service='informatique');
+SELECT prenom,salaire FROM employes WHERE service='informatique' ORDER BY salaire DESC LIMIT 0,1;-- correction
+
+-- 19. Afficher le prenom de l'informaticien ayant été recruté en premier.
+SELECT prenom FROM employes WHERE service='informatique' ORDER BY date_embauche DESC LIMIT 0,1;
+SELECT prenom FROM employes WHERE service='informatique' AND date_embauche =(SELECT MIN(date_embauche) FROM employes WHERE service='informatique');-- correction
+
 -- 20. Augmenter chaque employé de 100€
+UPDATE employes SET salaire= salaire+100;-- correction// pas utile de mettre les parenthèses car 1 seule opération
+
 -- 21. Supprimer les employés du service commercial   
+DELETE FROM employes WHERE service='commercial';
+
+-- 22. Donner le nom de l'employé ayant gagné le plus dans tous les commerciaux
+SELECT prenom,nom,salaire FROM employes WHERE salaire>(SELECT MAX(salaire) FROM employes WHERE service='commercial');
+SELECT prenom,nom,salaire FROM employes WHERE salaire ORDER BY;
+
+-- 23.Combien y'a t'il de commerciaux gagnant un salaire inférieur ou égal avoisinant les 1500€ ? 
+SELECT COUNT(*) FROM employes WHERE service='commercial' AND salaire LIKE 1500;
+SELECT COUNT(*) FROM employes WHERE service='commercial' AND salaire <=1500;
 
 
