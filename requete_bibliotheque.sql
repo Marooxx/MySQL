@@ -111,4 +111,4 @@ SELECT abonne.prenom,emprunt.id_livre
 FROM abonne
 LEFT JOIN emprunt ON abonne.id_abonne = emprunt.id_abonne;
 -- La clause LEFT JOIN permet de rappatrier toutes les données dans la table considéré comme étant de gauche(donc abonné dans notre cas) sans correspondance exigée dans l'autre table (emprunt). C'est ce que l'on appelle une jointure externe.
-
+--  permet de collecter des informations archivées
